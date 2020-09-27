@@ -1,15 +1,31 @@
-WORDING = {"a": 1, "e": 2, "i": 3, "u": 4, "o": 5}  # To make a letter represent a specific character we use a tuple
+vowel='aeuio'
+digits='12345'
+
+def identification(words):
+    j=0
+    for x in words:
+        if x.isdigit():
+            j=+1
+    if j==0:
+        print(coding(words))
+    else:
+        print(decoding(words))
+
+
+
+def decoding(words):
+    maketr=str.maketrans(digits,vowel)
+    return words.t
+
+
+
 
 
 def coding(words):
-    for x in WORDING.keys():  # Using this loop, we iterate through the keys in the tuple in the form of letters
-        if x in words:  # Next,if this key, that is, the letter is in our string
-            words = words.replace(x, str(WORDING[x]))   # We equate our word characters by replacing the key:value
-    return words
+    maketr=str.maketrans(vowel,digits)
+    return words.translate(maketr)
 
 
-def encoding(words):
-    pass
+identification("hello")
+identification('h2ll5')
 
-
-print(coding('hello'))
