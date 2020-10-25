@@ -14,8 +14,7 @@ def rot13 (message):
             txt += x.lower().translate(translator)
         elif x.lower() in outtab:
             txt += x.lower().translate(translator2)
-    for x in j:
-        txt.index() =txt.upper()
+    
     return txt
 
 
