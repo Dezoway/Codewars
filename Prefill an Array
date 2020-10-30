@@ -1,0 +1,23 @@
+def prefil(n, v=None):  # This function takes 2 arguments as input.1 argument is the number of elements in the array,
+    # 2 argument is the element itself
+    #   The v argument is assigned None by default.
+    if v is None:   # If v equals None then return an empty array
+        return []
+    x1 = []   # Initializing an empty array
+    if n == 0:  # If the number of repetitions is 0 then return an empty array as well
+        return []
+    try:    # This is where error checking is performed.Since a TypeError error will occur in the loop, because the
+        # variable n will contain characters
+        for x in range(int(n)):
+            x1.append(v)
+        return x1
+    except ValueError:      # Catch an error and output an invalid value.
+        print(n, "is invalid")
+
+
+print(prefil(3, 1))
+print(prefil(3, prefil(2, "2d")))
+print(prefil("xyz", 12))
+print(prefil("4", 3))
+print(prefil(0, prefil(0, 0)))
+print(prefil(3123))
