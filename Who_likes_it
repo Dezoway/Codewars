@@ -1,0 +1,21 @@
+def likes(names):
+    if len(names)==1:
+        return str(names[0])+" likes this"
+    elif len(names)==2:
+        return str(names[0]+", "+names[1])+" likes this"
+    elif len (names) == 3:
+        return str(names[0]+", "+names[1]+" and "+names[3])+" likes this"
+    elif len (names) > 3:
+        return str(names[0]+", "+names[1])+ " and "+str(len(names)-2)+" likes this"
+
+
+
+
+
+
+
+
+print(likes(["Peter"]))
+print(likes(["Jacob","Alex"]))
+print(likes(["Alex","Jacob","Mark","Max"]))
+print(likes(["Pavel","Victor","Max","Sofia","Elena"]))
