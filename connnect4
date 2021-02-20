@@ -1,0 +1,116 @@
+import pprint
+from typing import List
+
+class Connect4:
+
+    def __init__(self):
+        self.player1 = 1
+        self.player2 = 2
+        self.flag = 1
+        self.board = [['0' if z != 0 else '!' for x in range(7)] for z in range(7)]
+        for x in range(len(self.board)):
+            self.board[x].insert(0, '!')
+            self.board[x].append('!')
+
+        self.count = -1
+        self.win = 0
+
+    def diag(self):
+        for x in range(len(self.board) -1, -1, -1):
+            for i in range(len(self.board[x])):
+                if self.board[x][i] == str(self.flag) and self.board[x][i] == self.board[x - 1][i + 1]\
+                        == self.board[x - 2][i + 2] == self.board[x - 3][i + 3] or self.board[x][i] == str(self.flag)\
+                        and self.board[x][i] == self.board[x - 1][i - 1] == self.board[x - 2][i - 2]\
+                        == self.board[x - 3][i - 3]:
+                    return 1
+
+    def horizon(self):
+        for x in range(len(self.board) -1, -1, -1):
+            for i in range(len(self.board[x])):
+                if self.board[x][i] == str(self.flag) and self.board[x][i] == self.board[x][i + 1] ==\
+                        self.board[x][i + 2] == self.board[x][i + 3]:
+                    return 1
+
+    def vertical(self):
+        for x in range(len(self.board) -1, -1, -1):
+            for i in range(len(self.board[x])):
+                if self.board[x][i] == str(self.flag) and self.board[x][i] == self.board[x - 1][i] == \
+                        self.board[x - 2][i] == self.board[x - 3][i]:
+                    return 1
+
+    def variable(self):
+        if self.diag():
+            return self.diag()
+        if self.horizon():
+            return self.horizon
+        if self.vertical():
+            return self.vertical
+
+    def play(self, pos):
+        if self.win != 0:
+            return 'Game has finished'
+        if self.flag == 1:
+            while True:
+                if self.board[self.count][pos + 1] == '!':
+                    self.count = -1
+                    return 'Column full!'
+                elif self.board[self.count][pos + 1] != '0':
+                    self.count -= 1
+                else:
+                    self.board[self.count][pos + 1] = '1'
+                    self.count = -1
+                    self.variable()
+                    if self.variable():
+                        self.win = 1
+                        return 'Player 1 wins!'
+                    self.flag = 2
+                    return 'Player 1 has a turn'
+        elif self.flag == 2:
+            while True:
+                if self.board[self.count][pos + 1] == '!':
+                    self.count = -1
+                    return 'Column full'
+                elif self.board[self.count][pos + 1] != '0':
+                    self.count -= 1
+                else:
+                    self.board[self.count][pos + 1] = '2'
+                    self.count = -1
+                    if self.variable():
+                        self.win = 1
+                        return 'Player 2 wins!'
+                    self.flag = 1
+                    return 'Player 2 has a turn'
+
+
+game1 = Connect4()
+print(game1.play(0))
+print(game1.play(3))
+print(game1.play(0))
+print(game1.play(5))
+print(game1.play(4))
+print(game1.play(4))
+print(game1.play(4))
+print(game1.play(2))
+print(game1.play(6))
+print(game1.play(4))
+print(game1.play(6))
+print(game1.play(0))
+print(game1.play(3))
+print(game1.play(5))
+print(game1.play(6))
+print(game1.play(4))
+print(game1.play(5))
+print(game1.play(3))
+print(game1.play(3))
+print(game1.play(1))
+print(game1.play(2))
+print(game1.play(1))
+print(game1.play(4))
+print(game1.play(5))
+print(game1.play(5))
+print(game1.play(2))
+print(game1.play(4))
+print(game1.play(3))
+#0, 3, 0, 5, 4, 4, 4, 2, 6, 4, 6, 0, 3, 5, 6, 4, 5, 3, 3, 1, 2, 1, 4, 5, 5, 2, 4, 3
+pprint.pprint(game1.board)
+
