@@ -1,0 +1,124 @@
+from sys import exit as goodbye
+class Animal:
+    def __init__(self,name):
+        self.__hungry = 5
+        self.__mood = 5
+        self.__name = name
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name2):
+        if name2 == ' ' or name2 == '':
+            raise NameError('Вы ввели пустое имя для зверюшки, попробуйте ещё раз')
+        self.__name = name2
+        print('Теперь меня зовут '+self.__name)
+
+    @property
+    def hungry(self):
+        return self.__hungry
+
+    @hungry.setter
+    def hungry(self, new_hungry: int):
+        if self.__hungry - new_hungry <= 0:
+            self.__hungry = 0
+        else:
+            self.__hungry -= new_hungry
+
+    @property
+    def mood(self):
+        return self.__mood
+
+    @mood.setter
+    def mood(self, value_mood: int):
+        if self.__mood - value_mood <= 0:
+            self.__mood = 0
+        else:
+            self.__mood -= value_mood
+
+
+    def __pass_time(self):
+        self.__hungry += 1
+        self.__mood += 1
+
+    def mooded(self):
+        if self.mood <= 4:
+            print('Я весёлый :)))')
+        elif self.mood <= 7:
+            print('Я грустный:(')
+        elif self.mood <= 10:
+            print('Я очень грустный:(((')
+        self.__pass_time()
+
+    def play(self):
+        if self.mood != 0 and self.mood != 10:
+            value_play = int(input('Сколько часов ты хочешь поиграть со мной? '))
+            self.mood += value_play
+            print('Уиии')
+            self.mooded()
+        self.__pass_time()
+        pass
+
+    def hungrys(self):
+        if self.__hungry == 10:
+            print('Я умер')
+            del self
+        elif self.__hungry <= 3:
+            print('Я сытый')
+        elif self.__hungry <= 6:
+            print('Я достаточно голодный')
+        elif self.__hungry <= 10:
+            print('Срочно покорми меня иначе я умру')
+
+        try:
+            self.__pass_time()
+        except UnboundLocalError:
+            print('Ваша зверюшка погибла,потому что вы не покормили её вовремя.Начните игру сначала')
+            goodbye()
+
+
+
+    def eat(self):
+        print(self.hungry)
+        value_eat = int(input('Сколько еды ты хочешь скормить мне? '))
+        if self.hungry != 0 and self.hungry != 10:
+            self.hungry = value_eat
+            print(self.hungry)
+            return self.hungrys()
+        return self.hungrys()
+
+
+    def tasks(self):
+        if len(self.name) == 0:
+            new_name = str(input('У меня нет имени, пожалуйста задайте мне новое имя:'))
+            self.name = new_name
+        print('Привет,меня зовут '+self.name)
+        print('Чем займёмся сегодня?\n'
+              '1:Покормить меня\n'
+              '2:Узнать уровень голода\n'
+              '3:Узнать уровень настроения\n'
+              '4:Поиграть со мной\n'
+              '5:Изменить моё имя?\n'
+              '6:Выйти из программы'
+        )
+        value = int(input('Выберите вариант:'))
+        if value == 1:
+            self.eat()
+        elif value == 2:
+            self.hungrys()
+        elif value == 3:
+            self.mooded()
+        elif value == 4:
+            self.play()
+        elif value == 5:
+            new_name = str(input('Введите новое имя: '))
+            self.name = new_name
+        elif value == 6:
+            return 0
+
+
+pig1 = Animal('')
+while pig1.tasks() != 0:
+    pig1.tasks()
