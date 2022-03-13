@@ -11,4 +11,4 @@ def expanded(num):
 
 
 
-print(expanded(4))
+print(expanded(12800))

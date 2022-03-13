@@ -1,11 +1,9 @@
-def smallest_integer(array):
-    i1=min(array)
-    array.remove(i1)
-    i2=min(array)
-    return i1+i2
+import requests
+from bs4 import BeautifulSoup
 
+resp = requests.get('https://stepik.org/media/attachments/lesson/209723/5.html') # скачиваем файл
+html = resp.text
+soup = BeautifulSoup(html, 'html.parser') # делаем суп
+print(soup.text)
+print(sum([int(x) for x in soup.text.split() if x.isdigit()]))
 
-
-
-print(smallest_integer([5,8,12,18,22]))
-print(smallest_integer([7,15,12,18,22]))
