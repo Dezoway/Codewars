@@ -41,15 +41,43 @@ class LinkedGraph:
         if v not in self._vertex:self._vertex.append(v)
 
     def add_link(self, link):
-        if all([link != x for x in self._links]):
+        if (link.v1,link.v2) not in [(x.v1, x.v2) for x in self._links] and (link.v1, link.v2) not in [(x.v2, x.v1) for x in self._links]:
             self._links.append(link)
             if link.v1 not in self._vertex:self._vertex.append(link.v1)
             if link.v2 not in self._vertex:self._vertex.append(link.v2)
 
     def find_path(self, start_v, stop_v):
-        print(self._vertex[0].links)
-        #print(start_v.__class__)
-        print(stop_v.links)
+        routes = dict()
+        for x in self._links:
+            if x.v1 not in routes:
+                routes[x.v1] = [[x.v2, x.dist]]
+            if x.v1 in routes and [x.v2, x.dist] not in routes[x.v1]:
+                routes[x.v1].append([x.v2, x.dist])
+            if x.v2 not in routes:
+                routes[x.v2] = [[x.v1, x.dist]]
+            if x.v2 in routes and [x.v1, x.dist] not in routes[x.v2]:
+                routes[x.v2].append([x.v1, x.dist])
+        vertexes = {x:[None, 0] if x == start_v else [None, 999] for x in routes.keys()}
+        non_visit = [x for x in routes.keys()]
+        while non_visit:
+            min_elem = min([x for x in vertexes.keys() if x in non_visit], key=lambda x:vertexes[x][1])
+            for x in routes[min_elem]:
+                if vertexes[x[0]][1] > vertexes[min_elem][1] + x[1]:
+                    vertexes[x[0]][1] = vertexes[min_elem][1] + x[1]
+                    vertexes[x[0]][0] = min_elem
+            del non_visit[non_visit.index(min_elem)]
+        initial = vertexes[stop_v]
+        best_route = [stop_v]
+        links = [x for x in self._links if (x.v1 == stop_v and x.v2 == initial[0]) or (x.v1 == initial[0] and x.v2 == stop_v)]
+        while initial[0]:
+            best_route.append(initial[0])
+            k = initial[0]
+            initial = vertexes[initial[0]]
+            links += [x for x in self._links if (x.v1 == k and x.v2 == initial[0]) or (x.v1 == initial[0] and x.v2 == k)]
+
+        return list(reversed(best_route)),links
+
+
 
 
 class Station(Vertex):
@@ -67,25 +95,3 @@ class Station(Vertex):
 class LinkMetro(Link):
     def __init__(self, v1, v2, dist):
         super().__init__(v1,v2,dist)
-
-
-
-map_metro = LinkedGraph()
-v1 = Station("Сретенский бульвар")
-v2 = Station("Тургеневская")
-v3 = Station("Чистые пруды")
-v4 = Station("Лубянка")
-v5 = Station("Кузнецкий мост")
-v6 = Station("Китай-город 1")
-v7 = Station("Китай-город 2")
-
-map_metro.add_link(LinkMetro(v1, v2, 1))
-map_metro.add_link(LinkMetro(v2, v3, 1))
-map_metro.add_link(LinkMetro(v1, v3, 1))
-
-map_metro.add_link(LinkMetro(v4, v5, 1))
-map_metro.add_link(LinkMetro(v6, v7, 1))
-
-map_metro.add_link(LinkMetro(v2, v7, 5))
-map_metro.add_link(LinkMetro(v3, v4, 3))
-map_metro.add_link(LinkMetro(v5, v6, 3))
